@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank4Us.CanonicalSchema", "Bank4Us.CanonicalSchema\Bank4Us.CanonicalSchema.csproj", "{A00041AF-F01A-4995-B2B1-DB059529DBDD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A00041AF-F01A-4995-B2B1-DB059529DBDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A00041AF-F01A-4995-B2B1-DB059529DBDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A00041AF-F01A-4995-B2B1-DB059529DBDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A00041AF-F01A-4995-B2B1-DB059529DBDD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C5BB940A-B9FC-427D-8C8D-EADBEBD27EC6}
+	EndGlobalSection
+EndGlobal

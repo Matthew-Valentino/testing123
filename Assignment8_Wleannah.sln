@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank4Us.CanonicalSchema", "Bank4Us.CanonicalSchema\Bank4Us.CanonicalSchema.csproj", "{A00041AF-F01A-4995-B2B1-DB059529DBDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bank4Us.Common", "Bank4Us.CanonicalSchema\Bank4Us.Common.csproj", "{A00041AF-F01A-4995-B2B1-DB059529DBDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank4Us.DataAccess", "Bank4Us.DataAccess\Bank4Us.DataAccess.csproj", "{635655FC-0A41-404A-BACB-1420D1B1255C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{A00041AF-F01A-4995-B2B1-DB059529DBDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A00041AF-F01A-4995-B2B1-DB059529DBDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A00041AF-F01A-4995-B2B1-DB059529DBDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{635655FC-0A41-404A-BACB-1420D1B1255C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{635655FC-0A41-404A-BACB-1420D1B1255C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{635655FC-0A41-404A-BACB-1420D1B1255C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{635655FC-0A41-404A-BACB-1420D1B1255C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

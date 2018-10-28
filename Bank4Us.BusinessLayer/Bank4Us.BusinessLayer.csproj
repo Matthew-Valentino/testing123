@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Core\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NRules" Version="0.8.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bank4Us.CanonicalSchema\Bank4Us.Common.csproj" />
+    <ProjectReference Include="..\Bank4Us.DataAccess\Bank4Us.DataAccess.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -21,6 +21,7 @@ namespace Bank4Us.Common.Core
             this.CreatedOn = DateTime.Now;
             this.UpdatedOn = DateTime.Now;
             this.State = (int)EntityState.New;
+            this.BusinessRuleNotifications = new List<string>();
 
         }
         public string CreatedBy { get; set; }
@@ -30,6 +31,9 @@ namespace Bank4Us.Common.Core
 
         [NotMapped]
         public int State { get; set; }
+
+        [NotMapped]
+        public List<String> BusinessRuleNotifications { get; set; }
 
         public enum EntityState
         {

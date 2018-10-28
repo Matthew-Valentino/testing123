@@ -25,5 +25,6 @@ namespace Bank4Us.Common.CanonicalSchema
         [MaxLength(255)]
         public string EmailAddress { get; set; }
         public List<Account> Accounts { get; set; }
+        public int Age { get; set; }
     }
 }

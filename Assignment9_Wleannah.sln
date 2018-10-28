@@ -5,7 +5,11 @@ VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bank4Us.Common", "Bank4Us.CanonicalSchema\Bank4Us.Common.csproj", "{A00041AF-F01A-4995-B2B1-DB059529DBDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank4Us.DataAccess", "Bank4Us.DataAccess\Bank4Us.DataAccess.csproj", "{635655FC-0A41-404A-BACB-1420D1B1255C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bank4Us.DataAccess", "Bank4Us.DataAccess\Bank4Us.DataAccess.csproj", "{635655FC-0A41-404A-BACB-1420D1B1255C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bank4Us.BusinessLayer", "Bank4Us.BusinessLayer\Bank4Us.BusinessLayer.csproj", "{AD8F9EE9-FA81-444A-983E-151F7F5907A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank4Us.ServiceApp", "Bank4Us.ServiceApp\Bank4Us.ServiceApp.csproj", "{2A5E1320-118F-42EF-82F7-AB2F11AFF6C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{635655FC-0A41-404A-BACB-1420D1B1255C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{635655FC-0A41-404A-BACB-1420D1B1255C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{635655FC-0A41-404A-BACB-1420D1B1255C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD8F9EE9-FA81-444A-983E-151F7F5907A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD8F9EE9-FA81-444A-983E-151F7F5907A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD8F9EE9-FA81-444A-983E-151F7F5907A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD8F9EE9-FA81-444A-983E-151F7F5907A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A5E1320-118F-42EF-82F7-AB2F11AFF6C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A5E1320-118F-42EF-82F7-AB2F11AFF6C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A5E1320-118F-42EF-82F7-AB2F11AFF6C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A5E1320-118F-42EF-82F7-AB2F11AFF6C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

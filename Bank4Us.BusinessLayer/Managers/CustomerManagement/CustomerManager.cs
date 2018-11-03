@@ -78,7 +78,9 @@ namespace Bank4Us.BusinessLayer.Managers.CustomerManagement
             _logger.LogInformation("Executing the business rules for {0}", this.GetType());
 
             _repository.Create<Customer>(customer);
+            _unitOfWork.SaveChanges();
             _logger.LogInformation("Record saved for {0}", this.GetType());
+        
         }
 
         /// <summary>

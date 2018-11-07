@@ -1,0 +1,26 @@
+<h1>Bank4Us Customers</h1>
+
+<p>This component demonstrates fetching data from the Bank4Us ServiceApp.</p>
+
+<p *ngIf="!customers"><em>Loading...</em></p>
+
+<table class='table' *ngIf="customers">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>FirstName</th>
+      <th>LastName</th>
+      <th>EmailAddress</th>
+      <th>Age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let customer of customers">
+      <td>{{ customer.id }}</td>
+      <td>{{ customer.firstName }}</td>
+      <td>{{ customer.lastName }}</td>
+      <td>{{ customer.emailAddress }}</td>
+      <td>{{ customer.age }}</td>
+    </tr>
+  </tbody>
+</table>

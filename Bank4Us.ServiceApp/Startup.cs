@@ -45,6 +45,17 @@ namespace Bank4Us.ServiceApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Enable Cross-Origin Requests (CORS) in ASP.NET Core
+            //https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-2.1#enable-cors-with-cors-middleware
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+            });
+
             //INFO: BRE example implementation.  
             // https://github.com/NRules/NRules/wiki/Getting-Started
             var ruleset = new RuleRepository();
@@ -89,6 +100,10 @@ namespace Bank4Us.ServiceApp
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            // Enable Cross-Origin Requests (CORS) in ASP.NET Core
+            //https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-2.1#enable-cors-with-cors-middleware
+            app.UseCors("CorsPolicy");
+
             loggerFactory.AddConsole(LogLevel.Information);
             loggerFactory.AddDebug();
 

@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bank4Us.BusinessLayer", "Ba
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bank4Us.ServiceApp", "Bank4Us.ServiceApp\Bank4Us.ServiceApp.csproj", "{2A5E1320-118F-42EF-82F7-AB2F11AFF6C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank4Us.WebApp", "Bank4Us.WebApp\Bank4Us.WebApp.csproj", "{D1D8EBFA-C58A-44B6-88F8-73F751005AC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bank4Us.WebApp", "Bank4Us.WebApp\Bank4Us.WebApp.csproj", "{D1D8EBFA-C58A-44B6-88F8-73F751005AC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank4Us.STS", "Bank4Us.STS\Bank4Us.STS.csproj", "{F229263D-663D-4A10-8D4D-B20A2A5F3316}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{D1D8EBFA-C58A-44B6-88F8-73F751005AC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1D8EBFA-C58A-44B6-88F8-73F751005AC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1D8EBFA-C58A-44B6-88F8-73F751005AC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F229263D-663D-4A10-8D4D-B20A2A5F3316}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F229263D-663D-4A10-8D4D-B20A2A5F3316}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F229263D-663D-4A10-8D4D-B20A2A5F3316}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F229263D-663D-4A10-8D4D-B20A2A5F3316}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { Customer } from "./customer.model";
+import { RequestOptions } from "@angular/http";
 
 @Injectable()
 export class CustomerService {
@@ -9,6 +10,13 @@ export class CustomerService {
 
   getCustomers() {
     return this.http.get<Customer[]>(this.baseUrl + '/customers');
+  }
+
+  getCustomersWithToken(token: string) {
+
+   let headers = new HttpHeaders();
+   headers = headers.set("Authorization", "Bearer " + token);
+   return this.http.get<Customer[]>(this.baseUrl + '/customers', { headers });
   }
 
   getCustomerById(id: number) {

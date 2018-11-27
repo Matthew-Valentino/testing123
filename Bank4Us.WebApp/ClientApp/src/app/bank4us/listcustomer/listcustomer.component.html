@@ -1,7 +1,9 @@
 <h1>Bank4Us Customers</h1>
 
 <p>This component demonstrates fetching data from the Bank4Us ServiceApp.</p>
-
+<div><button (click)="login()">Login</button></div>
+<div><button (click)="logout()">Logout</button></div>
+<div> Access Token: {{  this.accessToken }}</div>
 <p *ngIf="!customers"><em>Loading...</em></p>
 
 <table class='table' *ngIf="customers">

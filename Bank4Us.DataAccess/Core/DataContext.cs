@@ -27,7 +27,7 @@ namespace Bank4Us.DataAccess.Core
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder); 
-            optionsBuilder.UseSqlServer(@"Server=.\localhost;Database=Bank4Us_Assignment9;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer(@"Server=.\localhost;Database=Bank4Us;Trusted_Connection=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

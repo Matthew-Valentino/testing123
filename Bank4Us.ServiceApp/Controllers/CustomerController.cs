@@ -8,6 +8,8 @@ using Bank4Us.ServiceApp.Filters;
 using Bank4Us.Common.CanonicalSchema;
 using Bank4Us.BusinessLayer.Managers.CustomerManagement;
 using Bank4Us.Common.Facade;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -57,6 +59,7 @@ namespace Bank4Us.ServiceApp.Controllers
         [TransactionActionFilter()]
         [HttpGet]
         [Route("customers")]
+        [Authorize]
         public IActionResult GetAllCustomers()
         {
             try

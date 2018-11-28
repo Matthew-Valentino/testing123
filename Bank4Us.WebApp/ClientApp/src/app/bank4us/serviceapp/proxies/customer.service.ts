@@ -24,11 +24,11 @@ export class CustomerService {
   }
 
   createCustomer(customer: Customer) {
-    return this.http.post(this.baseUrl, customer);
+    return this.http.post<Customer>(this.baseUrl, customer);
   }
 
   updateCustomer(customer: Customer) {
-    return this.http.put(this.baseUrl, customer);
+    return this.http.put<Customer>(this.baseUrl, customer);
   }
 
   deleteCustomer(id: number) {

@@ -94,13 +94,13 @@ namespace Bank4Us.BusinessLayer.Managers.CustomerManagement
             _logger.LogInformation("Updating record for {0}", this.GetType());
 
             //INFO: Fact assertion.
-            _businessRulesEngine.Insert(customer);
+            //_businessRulesEngine.Insert(customer);
             //INFO: Execute the business rules.  
-            _businessRulesEngine.Fire();
+            //_businessRulesEngine.Fire();
             _logger.LogInformation("Executing the business rules for {0}", this.GetType());
 
             _repository.Update<Customer>(customer);
-            SaveChanges();
+            _unitOfWork.SaveChanges();
             _logger.LogInformation("Record saved for {0}", this.GetType());
         }
 

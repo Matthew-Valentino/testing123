@@ -94,7 +94,7 @@ namespace Bank4Us.ServiceApp.Controllers
         }
         [TransactionActionFilter()]
         [HttpPut]
-        public IActionResult Put(Customer customer)
+        public IActionResult Put([FromBody] Customer customer)
         {
             try
             {

@@ -6,4 +6,5 @@ export class Customer {
   age: number;
   accounts: object[];
   createdBy: string;
+  updatedBy: string;
 }

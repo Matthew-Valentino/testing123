@@ -12,6 +12,7 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ListCustomerComponent } from './bank4us/listcustomer/listcustomer.component';
 import { AddCustomerComponent } from './bank4us/addcustomer/addcustomer.component';
+import { EditCustomerComponent } from './bank4us/editcustomer/editcustomer.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { AddCustomerComponent } from './bank4us/addcustomer/addcustomer.componen
     CounterComponent,
     FetchDataComponent,
     ListCustomerComponent,
-    AddCustomerComponent
+    AddCustomerComponent,
+    EditCustomerComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -34,7 +36,8 @@ import { AddCustomerComponent } from './bank4us/addcustomer/addcustomer.componen
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'listcustomer', component: ListCustomerComponent },
-      { path: 'addcustomer', component: AddCustomerComponent }
+      { path: 'addcustomer', component: AddCustomerComponent },
+      { path: 'editcustomer', component: EditCustomerComponent }
     ])
   ],
   providers: [],

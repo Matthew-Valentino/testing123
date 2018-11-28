@@ -1,1 +1,33 @@
-﻿<div style="border: 1px solid red">editcustomer Component</div>
+﻿<h1>Bank4Us</h1>
+<div>
+  <h2>Edit Customer</h2>
+  <form (ngSubmit)="onSubmit()" *ngIf="editCustomer" [formGroup]="editForm" ngNativeValidate>
+
+    <div>
+      <label for="customerId">Id:</label>
+      <input disabled formControlName="customerId" placeholder="Customer Id" name="customerId" id="customerId" class="form-control" style="width:50px">
+    </div>
+
+    <div>
+      *<label for="firstName">First Name:</label>
+      <input required formControlName="firstName" placeholder="First Name" name="firstName" id="firstName" class="form-control" style="width:250px">
+    </div>
+
+    <div>
+      *<label for="lastName">Last Name:</label>
+      <input required formControlName="lastName" placeholder="Last name" name="lastName" id="lastName" class="form-control" style="width:250px">
+    </div>
+
+    <div>
+      <label for="email">Email address:</label>
+      <input type="email" formControlName="email" placeholder="Email" name="email" id="email" class="form-control" style="width:250px">
+    </div>
+
+    <div>
+      <label for="age">Age:</label>
+      <input formControlName="age" placeholder="Age" name="age" id="age" class="form-control" style="width:250px">
+    </div>
+    <p></p>
+    <button type="submit">Update Customer</button>
+  </form>
+</div>

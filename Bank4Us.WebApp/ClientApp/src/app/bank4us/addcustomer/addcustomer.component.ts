@@ -9,31 +9,13 @@ import { Router } from "@angular/router";
   templateUrl: './addcustomer.component.html',
   providers: [CustomerService]
 })
-export class AddCustomerComponent implements OnInit {
+export class AddCustomerComponent {
 
   constructor(private formBuilder: FormBuilder,
     private router: Router,
     private customerService: CustomerService) { }
   
   addForm: FormGroup;
-  firstName: FormControl;
-  lastName: FormControl;
-
-  ngOnInit() {
-
-    //INFO: Setup form validation.  
-    this.addForm = this.formBuilder.group({
-      firstName: new FormControl('', Validators.required),
-      lastName: new FormControl('', Validators.required),
-      email: [],
-      age: []
-    });
-
-    //INFO: Link local members to the template.  
-    this.firstName = this.addForm.controls['firstName'].value;
-    this.lastName = this.addForm.controls['lastName'].value;
-
-  }
 
   onSubmit() {
 
@@ -45,6 +27,7 @@ export class AddCustomerComponent implements OnInit {
 
     addcustomer.firstName = this.addForm.value.firstName;
     addcustomer.lastName = this.addForm.value.lastName;
+    addcustomer.emailAddress = this.addForm.value.emailAddress;
     addcustomer.age = this.addForm.value.age;
     addcustomer.accounts = [];
     addcustomer.createdBy = "admin";

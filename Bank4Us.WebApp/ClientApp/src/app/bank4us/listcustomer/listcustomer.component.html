@@ -19,7 +19,7 @@
   <tbody>
     <tr *ngFor="let customer of customers">
       <td>{{ customer.id }}</td>
-      <td>{{ customer.firstName }}</td>
+      <td><a href="/editcustomer?customerId={{ customer.id }}">{{ customer.firstName }}</a></td>
       <td>{{ customer.lastName }}</td>
       <td>{{ customer.emailAddress }}</td>
       <td>{{ customer.age }}</td>

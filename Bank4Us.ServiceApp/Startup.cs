@@ -27,6 +27,7 @@ using NRules.Fluent;
 using NRules.RuleModel;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Bank4Us.ServiceApp.Services;
 
 namespace Bank4Us.ServiceApp
 {
@@ -51,7 +52,11 @@ namespace Bank4Us.ServiceApp
         public void ConfigureServices(IServiceCollection services)
         {
 
-        // Enable Cross-Origin Requests (CORS) in ASP.NET Core
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<DataContext>()
+                .AddDefaultTokenProviders();
+
+            // Enable Cross-Origin Requests (CORS) in ASP.NET Core
             //https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-2.1#enable-cors-with-cors-middleware
             services.AddCors(options =>
             {
@@ -62,21 +67,33 @@ namespace Bank4Us.ServiceApp
                         .AllowCredentials());
             });
 
+            services.AddMvc()
+                .AddRazorPagesOptions(options =>
+                {
+                    options.Conventions.AuthorizeFolder("/Account/Manage");
+                    options.Conventions.AuthorizePage("/Account/Logout");
+                });
+
+            services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, AppClaimsPrincipalFactory>();
+
+            services.AddIdentityServer()
+            .AddDeveloperSigningCredential()
+            .AddInMemoryPersistedGrants()
+            .AddInMemoryIdentityResources(IdSvrConfig.GetIdentityResources())
+            .AddInMemoryApiResources(IdSvrConfig.GetApiResources())
+            .AddInMemoryClients(IdSvrConfig.GetClients())
+            .AddAspNetIdentity<ApplicationUser>();
+
             services.AddMvc();
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(options =>
                 {
-                    options.Authority = "https://localhost:44325";
+                    options.Authority = "https://localhost:44346";
                     options.RequireHttpsMetadata = false;
                     options.ApiName = "Bank4Us.ServiceApp";
                 });
-            //.
-                //AddOpenIdConnect(options => {
-                //    options.Authority = "https://localhost:44325";
-                //    options.ClientId = "swaggerui";
-                //    options.GetClaimsFromUserInfoEndpoint = true;
-                //});
 
             //INFO: BRE example implementation.  
             // https://github.com/NRules/NRules/wiki/Getting-Started
@@ -123,7 +140,7 @@ namespace Bank4Us.ServiceApp
                 c.AddSecurityDefinition("oauth2", new OAuth2Scheme
                 {
                     Flow = "implicit", // just get token via browser (suitable for swagger SPA)
-                    AuthorizationUrl = "https://localhost:44325/connect/authorize",
+                    AuthorizationUrl = "https://localhost:44346/connect/authorize",
                     Scopes = new Dictionary<string, string> { { "Bank4Us.ServiceApp", "Bank4Us API - full access" } }
                 });
 
@@ -166,8 +183,10 @@ namespace Bank4Us.ServiceApp
                 c.OAuthAppName("Bank4Us API - Swagger"); // presentation purposes only
 
             });
-            
+
             //app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseIdentityServer();
             app.UseAuthentication();
             app.UseMvc();
 

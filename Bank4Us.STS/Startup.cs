@@ -33,6 +33,7 @@ namespace Bank4Us.STS
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+            
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy", builder =>
@@ -54,9 +55,9 @@ namespace Bank4Us.STS
             // Register no-op EmailSender used by account confirmation and password reset during development
             // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
             services.AddSingleton<IEmailSender, EmailSender>();
-            //services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, AppClaimsPrincipalFactory>();
+            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, AppClaimsPrincipalFactory>();
 
-            services.AddTransient<IProfileService, AspNetIdentityProfileService>();
+            //services.AddTransient<IProfileService, AspNetIdentityProfileService>();
 
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()

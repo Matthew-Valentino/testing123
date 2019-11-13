@@ -8,7 +8,7 @@ export class AuthService {
 
   constructor() {
     const config = {
-      authority: 'https://localhost:44325',
+      authority: 'https://localhost:44346',
       client_id: 'angular-client',
       redirect_uri: 'http://localhost:4200/listcustomer/?callback',
       response_type: 'id_token token',

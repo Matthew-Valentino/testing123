@@ -59,8 +59,8 @@ namespace Bank4Us.ServiceApp.Controllers
         [TransactionActionFilter()]
         [HttpGet]
         [Route("customers")]
-        //[Authorize]
-        [Authorize(Policy = "EmployeeOnly")]
+        [Authorize]
+        //[Authorize(Policy = "EmployeeOnly")]
         public IActionResult GetAllCustomers()
         {
             try

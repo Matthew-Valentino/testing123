@@ -27,6 +27,8 @@ namespace Bank4Us.STS
                     ClientName = "Bank4Us API - Swagger",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
+                    AlwaysIncludeUserClaimsInIdToken = true,
+                    AlwaysSendClientClaims = true,
                     RequireConsent = false,
                     RedirectUris =
                     {
@@ -41,6 +43,7 @@ namespace Bank4Us.STS
                     ClientName = "Angular Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
+                    AlwaysIncludeUserClaimsInIdToken = true,
                     RequireConsent = false,
 
                     RedirectUris =           { "http://localhost:4200/listcustomer/?callback" },

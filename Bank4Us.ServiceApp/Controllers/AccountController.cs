@@ -19,8 +19,8 @@ namespace Bank4Us.ServiceApp.Controllers
 {
 
     /// <summary>
-    ///   Course Name: MSCS 6360 Enterprise Architecture
-    ///   Year: Fall 2018
+    ///   Course Name: COSC 6360 Enterprise Architecture
+    ///   Year: Fall 2019
     ///   Name: William J Leannah
     ///   Description: Example implementation of a Service App with MVC           
     /// </summary>

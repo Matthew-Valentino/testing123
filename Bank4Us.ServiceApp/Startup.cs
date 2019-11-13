@@ -8,12 +8,14 @@ using Bank4Us.BusinessLayer.Core;
 using Bank4Us.BusinessLayer.Managers.AccountManagement;
 using Bank4Us.BusinessLayer.Managers.CustomerManagement;
 using Bank4Us.BusinessLayer.Rules;
+using Bank4Us.Common.Core;
 using Bank4Us.DataAccess.Core;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
@@ -29,8 +31,8 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 namespace Bank4Us.ServiceApp
 {
     /// <summary>
-    ///   Course Name: MSCS 6360 Enterprise Architecture
-    ///   Year: Fall 2018
+    ///   Course Name: COSC 6360 Enterprise Architecture
+    ///   Year: Fall 2019
     ///   Name: William J Leannah
     ///   Description: Example implementation of a Service App with MVC           
     /// </summary>
@@ -67,9 +69,14 @@ namespace Bank4Us.ServiceApp
                 {
                     options.Authority = "https://localhost:44325";
                     options.RequireHttpsMetadata = false;
-
                     options.ApiName = "Bank4Us.ServiceApp";
                 });
+            //.
+                //AddOpenIdConnect(options => {
+                //    options.Authority = "https://localhost:44325";
+                //    options.ClientId = "swaggerui";
+                //    options.GetClaimsFromUserInfoEndpoint = true;
+                //});
 
             //INFO: BRE example implementation.  
             // https://github.com/NRules/NRules/wiki/Getting-Started
@@ -98,7 +105,12 @@ namespace Bank4Us.ServiceApp
             services.AddScoped<IAccountManager, AccountManager>();
             services.AddScoped<BusinessManagerFactory>();
 
-            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("EmployeeOnly", policy => policy.RequireClaim("EmployeeNumber"));
+            });
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             //INFO:Register the Swagger generator, defining 1 or more Swagger documents
             //https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-2.1&tabs=visual-studio%2Cvisual-studio-xml

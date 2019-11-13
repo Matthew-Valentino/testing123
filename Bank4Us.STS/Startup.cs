@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Bank4Us.STS.Data;
 using Bank4Us.STS.Services;
+using IdentityServer4.Services;
 
 namespace Bank4Us.STS
 {
@@ -53,6 +54,9 @@ namespace Bank4Us.STS
             // Register no-op EmailSender used by account confirmation and password reset during development
             // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
             services.AddSingleton<IEmailSender, EmailSender>();
+            //services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, AppClaimsPrincipalFactory>();
+
+            services.AddTransient<IProfileService, AspNetIdentityProfileService>();
 
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Bank4Us.STS.Pages.Account.Manage
+namespace Bank4Us.ServiceApp.Pages.Account.Manage
 {
     public static class ManageNavPages
     {

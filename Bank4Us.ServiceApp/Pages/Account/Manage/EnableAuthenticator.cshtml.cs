@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Bank4Us.Common.Core;
 
-namespace Bank4Us.STS.Pages.Account.Manage
+namespace Bank4Us.ServiceApp.Pages.Account.Manage
 {
     public class EnableAuthenticatorModel : PageModel
     {

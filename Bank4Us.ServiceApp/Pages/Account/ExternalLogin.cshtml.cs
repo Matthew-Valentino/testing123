@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-namespace Bank4Us.STS.Pages.Account
+namespace Bank4Us.ServiceApp.Pages.Account
 {
     public class ExternalLoginModel : PageModel
     {

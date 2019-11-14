@@ -51,10 +51,10 @@ namespace Bank4Us.ServiceApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<DataContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders()
+                .AddClaimsPrincipalFactory<AppClaimsPrincipalFactory>();
 
             // Enable Cross-Origin Requests (CORS) in ASP.NET Core
             //https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-2.1#enable-cors-with-cors-middleware
@@ -85,15 +85,12 @@ namespace Bank4Us.ServiceApp
             .AddInMemoryClients(IdSvrConfig.GetClients())
             .AddAspNetIdentity<ApplicationUser>();
 
-            services.AddMvc();
-
-            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-                .AddIdentityServerAuthentication(options =>
-                {
-                    options.Authority = "https://localhost:44346";
-                    options.RequireHttpsMetadata = false;
-                    options.ApiName = "Bank4Us.ServiceApp";
-                });
+            services.AddAuthentication()
+                 .AddJwtBearer(jwt => {
+                     jwt.Authority = "https://localhost:44346";
+                     jwt.RequireHttpsMetadata = false;
+                     jwt.Audience = "Bank4Us.ServiceApp";
+                 });
 
             //INFO: BRE example implementation.  
             // https://github.com/NRules/NRules/wiki/Getting-Started

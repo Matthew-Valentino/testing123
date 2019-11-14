@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Bank4Us.STS.Pages.Account
+namespace Bank4Us.ServiceApp.Pages.Account
 {
     public class AccessDeniedModel : PageModel
     {

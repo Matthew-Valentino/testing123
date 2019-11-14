@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-namespace Bank4Us.STS.Pages.Account.Manage
+namespace Bank4Us.ServiceApp.Pages.Account.Manage
 {
     public class Disable2faModel : PageModel
     {

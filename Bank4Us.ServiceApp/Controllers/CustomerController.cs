@@ -18,8 +18,8 @@ namespace Bank4Us.ServiceApp.Controllers
 {
 
     /// <summary>
-    ///   Course Name: MSCS 6360 Enterprise Architecture
-    ///   Year: Fall 2018
+    ///   Course Name: COSC 6360 Enterprise Architecture
+    ///   Year: Fall 2019
     ///   Name: William J Leannah
     ///   Description: Example implementation of a Service App with MVC           
     /// </summary>
@@ -59,8 +59,8 @@ namespace Bank4Us.ServiceApp.Controllers
         [TransactionActionFilter()]
         [HttpGet]
         [Route("customers")]
-        [Authorize]
-        public IActionResult GetAllCustomers()
+        [Authorize(AuthenticationSchemes = "Bearer")]
+         public IActionResult GetAllCustomers()
         {
             try
             {
@@ -78,6 +78,7 @@ namespace Bank4Us.ServiceApp.Controllers
 
         [TransactionActionFilter()]
         [HttpPost]
+       // [Authorize]
         public IActionResult Post([FromBody] Customer customer)
         {
             try

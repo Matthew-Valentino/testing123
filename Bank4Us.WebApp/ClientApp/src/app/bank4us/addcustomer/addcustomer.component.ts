@@ -9,13 +9,24 @@ import { Router } from "@angular/router";
   templateUrl: './addcustomer.component.html',
   providers: [CustomerService]
 })
-export class AddCustomerComponent {
+export class AddCustomerComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private router: Router,
     private customerService: CustomerService) { }
   
   addForm: FormGroup;
+
+    ngOnInit() {
+
+        //INFO: Init the form.   
+        this.addForm = this.formBuilder.group({
+            firstName: [],
+            lastName: [],
+            email: [],
+            age: []
+        });
+    }
 
   onSubmit() {
 

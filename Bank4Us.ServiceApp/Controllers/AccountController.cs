@@ -12,6 +12,8 @@ using Bank4Us.BusinessLayer.Core;
 using Microsoft.Extensions.Logging;
 using Bank4Us.Common.Facade;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Bank4Us.Common.Core;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,8 +21,8 @@ namespace Bank4Us.ServiceApp.Controllers
 {
 
     /// <summary>
-    ///   Course Name: MSCS 6360 Enterprise Architecture
-    ///   Year: Fall 2018
+    ///   Course Name: COSC 6360 Enterprise Architecture
+    ///   Year: Fall 2019
     ///   Name: William J Leannah
     ///   Description: Example implementation of a Service App with MVC           
     /// </summary>
@@ -31,14 +33,25 @@ namespace Bank4Us.ServiceApp.Controllers
     [Route("api/[controller]")]
     public class AccountController : BaseController
     {
-         
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private IAccountManager _manager;
         private ILogger _logger;
 
-        public AccountController(IAccountManager manager, ILogger<AccountController> logger) : base(manager, logger)
+        public AccountController(SignInManager<ApplicationUser> signInManager, IAccountManager manager, ILogger<AccountController> logger) : base(manager, logger)
         {
             _manager = manager;
             _logger = logger;
+            _signInManager = signInManager;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("/Account/Logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User logged out.");
+            return RedirectToPage("/Index");
         }
 
         // GET: api/values

@@ -8,12 +8,14 @@ using Bank4Us.BusinessLayer.Core;
 using Bank4Us.BusinessLayer.Managers.AccountManagement;
 using Bank4Us.BusinessLayer.Managers.CustomerManagement;
 using Bank4Us.BusinessLayer.Rules;
+using Bank4Us.Common.Core;
 using Bank4Us.DataAccess.Core;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
@@ -25,12 +27,13 @@ using NRules.Fluent;
 using NRules.RuleModel;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Bank4Us.ServiceApp.Services;
 
 namespace Bank4Us.ServiceApp
 {
     /// <summary>
-    ///   Course Name: MSCS 6360 Enterprise Architecture
-    ///   Year: Fall 2018
+    ///   Course Name: COSC 6360 Enterprise Architecture
+    ///   Year: Fall 2019
     ///   Name: William J Leannah
     ///   Description: Example implementation of a Service App with MVC           
     /// </summary>
@@ -48,8 +51,12 @@ namespace Bank4Us.ServiceApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<DataContext>()
+                .AddDefaultTokenProviders()
+                .AddClaimsPrincipalFactory<AppClaimsPrincipalFactory>();
 
-        // Enable Cross-Origin Requests (CORS) in ASP.NET Core
+            // Enable Cross-Origin Requests (CORS) in ASP.NET Core
             //https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-2.1#enable-cors-with-cors-middleware
             services.AddCors(options =>
             {
@@ -60,16 +67,30 @@ namespace Bank4Us.ServiceApp
                         .AllowCredentials());
             });
 
-            services.AddMvc();
-
-            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-                .AddIdentityServerAuthentication(options =>
+            services.AddMvc()
+                .AddRazorPagesOptions(options =>
                 {
-                    options.Authority = "https://localhost:44325";
-                    options.RequireHttpsMetadata = false;
-
-                    options.ApiName = "Bank4Us.ServiceApp";
+                    options.Conventions.AuthorizeFolder("/Account/Manage");
+                    options.Conventions.AuthorizePage("/Account/Logout");
                 });
+
+            services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, AppClaimsPrincipalFactory>();
+
+            services.AddIdentityServer()
+            .AddDeveloperSigningCredential()
+            .AddInMemoryPersistedGrants()
+            .AddInMemoryIdentityResources(IdSvrConfig.GetIdentityResources())
+            .AddInMemoryApiResources(IdSvrConfig.GetApiResources())
+            .AddInMemoryClients(IdSvrConfig.GetClients())
+            .AddAspNetIdentity<ApplicationUser>();
+
+            services.AddAuthentication()
+                 .AddJwtBearer(jwt => {
+                     jwt.Authority = "https://localhost:44346";
+                     jwt.RequireHttpsMetadata = false;
+                     jwt.Audience = "Bank4Us.ServiceApp";
+                 });
 
             //INFO: BRE example implementation.  
             // https://github.com/NRules/NRules/wiki/Getting-Started
@@ -98,7 +119,12 @@ namespace Bank4Us.ServiceApp
             services.AddScoped<IAccountManager, AccountManager>();
             services.AddScoped<BusinessManagerFactory>();
 
-            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("EmployeeOnly", policy => policy.RequireClaim("EmployeeNumber"));
+            });
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             //INFO:Register the Swagger generator, defining 1 or more Swagger documents
             //https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-2.1&tabs=visual-studio%2Cvisual-studio-xml
@@ -111,7 +137,7 @@ namespace Bank4Us.ServiceApp
                 c.AddSecurityDefinition("oauth2", new OAuth2Scheme
                 {
                     Flow = "implicit", // just get token via browser (suitable for swagger SPA)
-                    AuthorizationUrl = "https://localhost:44325/connect/authorize",
+                    AuthorizationUrl = "https://localhost:44346/connect/authorize",
                     Scopes = new Dictionary<string, string> { { "Bank4Us.ServiceApp", "Bank4Us API - full access" } }
                 });
 
@@ -154,8 +180,10 @@ namespace Bank4Us.ServiceApp
                 c.OAuthAppName("Bank4Us API - Swagger"); // presentation purposes only
 
             });
-            
+
             //app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseIdentityServer();
             app.UseAuthentication();
             app.UseMvc();
 

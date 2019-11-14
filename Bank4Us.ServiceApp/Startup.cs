@@ -53,8 +53,7 @@ namespace Bank4Us.ServiceApp
         {
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<DataContext>()
-                .AddDefaultTokenProviders()
-                .AddClaimsPrincipalFactory<AppClaimsPrincipalFactory>();
+                .AddDefaultTokenProviders();
 
             // Enable Cross-Origin Requests (CORS) in ASP.NET Core
             //https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-2.1#enable-cors-with-cors-middleware
@@ -76,6 +75,9 @@ namespace Bank4Us.ServiceApp
 
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, AppClaimsPrincipalFactory>();
+
+            //INFO: IdentityServer4 is an OpenID Connect and OAuth 2.0 framework for ASP.NET Core.
+            //      http://docs.identityserver.io/en/latest/
 
             services.AddIdentityServer()
             .AddDeveloperSigningCredential()

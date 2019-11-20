@@ -28,6 +28,8 @@ using NRules.RuleModel;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Bank4Us.ServiceApp.Services;
+using IdentityServer4.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Bank4Us.ServiceApp
 {
@@ -71,23 +73,21 @@ namespace Bank4Us.ServiceApp
                 {
                     options.Conventions.AuthorizeFolder("/Account/Manage");
                     options.Conventions.AuthorizePage("/Account/Logout");
-                });
+                }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddSingleton<IEmailSender, EmailSender>();
-            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, AppClaimsPrincipalFactory>();
 
             //INFO: IdentityServer4 is an OpenID Connect and OAuth 2.0 framework for ASP.NET Core.
-            //      http://docs.identityserver.io/en/latest/
-
+            //      http://docs.identityserver.io/en/latest/ 
+            //Helpful Post:  https://fullstackmark.com/post/21/user-authentication-and-identity-with-angular-aspnet-core-and-identityserver
             services.AddIdentityServer()
-            .AddDeveloperSigningCredential()
-            .AddInMemoryPersistedGrants()
-            .AddInMemoryIdentityResources(IdSvrConfig.GetIdentityResources())
-            .AddInMemoryApiResources(IdSvrConfig.GetApiResources())
-            .AddInMemoryClients(IdSvrConfig.GetClients())
-            .AddAspNetIdentity<ApplicationUser>();
+                    .AddDeveloperSigningCredential()
+                    .AddInMemoryPersistedGrants()
+                    .AddInMemoryIdentityResources(IdSvrConfig.GetIdentityResources())
+                    .AddInMemoryApiResources(IdSvrConfig.GetApiResources())
+                    .AddInMemoryClients(IdSvrConfig.GetClients())
+                    .AddAspNetIdentity<ApplicationUser>();
 
-            services.AddAuthentication()
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                  .AddJwtBearer(jwt => {
                      jwt.Authority = "https://localhost:44346";
                      jwt.RequireHttpsMetadata = false;
@@ -120,13 +120,13 @@ namespace Bank4Us.ServiceApp
             services.AddScoped<ICustomerManager, CustomerManager>();
             services.AddScoped<IAccountManager, AccountManager>();
             services.AddScoped<BusinessManagerFactory>();
+            services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddTransient<IProfileService, IdentityClaimsProfileService>();
 
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("EmployeeOnly", policy => policy.RequireClaim("EmployeeNumber"));
             });
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             //INFO:Register the Swagger generator, defining 1 or more Swagger documents
             //https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-2.1&tabs=visual-studio%2Cvisual-studio-xml
@@ -186,7 +186,6 @@ namespace Bank4Us.ServiceApp
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseIdentityServer();
-            app.UseAuthentication();
             app.UseMvc();
 
         }

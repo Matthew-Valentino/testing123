@@ -23,7 +23,7 @@ export class AddCustomerComponent implements OnInit {
         this.addForm = this.formBuilder.group({
             firstName: [],
             lastName: [],
-            email: [],
+            emailAddress: [],
             age: []
         });
     }

@@ -13,7 +13,7 @@ namespace Bank4Us.ServiceApp
 {
     /// <summary>
     ///   Course Name: COSC 6360 Enterprise Architecture
-    ///   Year: Fall 2019
+    ///   Year: Fall 2020
     ///   Name: William J Leannah
     ///   Description: Introduction to Identity in ASP.NET Core
     ///                https://docs.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-2.1&tabs=visual-studio 

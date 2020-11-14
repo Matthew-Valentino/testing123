@@ -22,7 +22,7 @@ namespace Bank4Us.ServiceApp.Controllers
 
     /// <summary>
     ///   Course Name: COSC 6360 Enterprise Architecture
-    ///   Year: Fall 2019
+    ///   Year: Fall 2020
     ///   Name: William J Leannah
     ///   Description: Example implementation of a Service App with MVC           
     /// </summary>
@@ -30,7 +30,7 @@ namespace Bank4Us.ServiceApp.Controllers
 
     // [Authorize]
     [LoggingActionFilter]
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
     public class AccountController : BaseController
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -44,14 +44,14 @@ namespace Bank4Us.ServiceApp.Controllers
             _signInManager = signInManager;
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("/Account/Logout")]
+        [HttpGet]
+        //[ValidateAntiForgeryToken]
+        [Route("Account/Logout")]
         public async Task<IActionResult> Logout()
-        {
+            {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
-            return RedirectToPage("/Index");
+            return Redirect("http://localhost:4200/listcustomer");
         }
 
         // GET: api/values

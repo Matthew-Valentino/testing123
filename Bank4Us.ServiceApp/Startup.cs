@@ -35,7 +35,7 @@ namespace Bank4Us.ServiceApp
 {
     /// <summary>
     ///   Course Name: COSC 6360 Enterprise Architecture
-    ///   Year: Fall 2020
+    ///   Year: Fall 2021
     ///   Name: William J Leannah
     ///   Description: Example implementation of a Service App with MVC           
     /// </summary>
@@ -68,13 +68,6 @@ namespace Bank4Us.ServiceApp
                         .AllowCredentials());
             });
 
-            services.AddMvc()
-                .AddRazorPagesOptions(options =>
-                {
-                    options.Conventions.AuthorizeFolder("/Account/Manage");
-                    options.Conventions.AuthorizePage("/Account/Logout");
-                }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
 
             //INFO: IdentityServer4 is an OpenID Connect and OAuth 2.0 framework for ASP.NET Core.
             //      http://docs.identityserver.io/en/latest/ 
@@ -88,11 +81,20 @@ namespace Bank4Us.ServiceApp
                     .AddAspNetIdentity<ApplicationUser>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                 .AddJwtBearer(jwt => {
+                 .AddJwtBearer(jwt =>
+                 {
                      jwt.Authority = "https://localhost:44346";
                      jwt.RequireHttpsMetadata = false;
                      jwt.Audience = "Bank4Us.ServiceApp";
                  });
+
+            services.AddAuthorization(options =>
+            {
+                options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+                                            .RequireAuthenticatedUser()
+                                            .RequireClaim("EmployeeNumber")
+                                            .Build();
+            });
 
             //INFO: BRE example implementation.  
             // https://github.com/NRules/NRules/wiki/Getting-Started
@@ -121,12 +123,7 @@ namespace Bank4Us.ServiceApp
             services.AddScoped<IAccountManager, AccountManager>();
             services.AddScoped<BusinessManagerFactory>();
             services.AddSingleton<IEmailSender, EmailSender>();
-            services.AddTransient<IProfileService, IdentityClaimsProfileService>();
-
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("EmployeeOnly", policy => policy.RequireClaim("EmployeeNumber"));
-            });
+            services.AddTransient<IProfileService, IdentityClaimsProfileService>();     
 
             //INFO:Register the Swagger generator, defining 1 or more Swagger documents
             //https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-2.1&tabs=visual-studio%2Cvisual-studio-xml
@@ -146,6 +143,13 @@ namespace Bank4Us.ServiceApp
                 c.OperationFilter<AuthorizeCheckOperationFilter>();
 
             });
+
+            services.AddMvc()
+                .AddRazorPagesOptions(options =>
+                {
+                    options.Conventions.AuthorizeFolder("/Account/Manage");
+                    options.Conventions.AuthorizePage("/Account/Logout");
+                }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
         }
 

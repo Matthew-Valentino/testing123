@@ -9,7 +9,7 @@ namespace Bank4Us.BusinessLayer.Managers.CustomerManagement
 {
     /// <summary>
     ///   Course Name: COSC 6360 Enterprise Architecture
-    ///   Year: Fall 2020
+    ///   Year: Fall 2021
     ///   Name: William J Leannah
     ///   Description: Example implementation of a Business Layer              
     /// </summary>

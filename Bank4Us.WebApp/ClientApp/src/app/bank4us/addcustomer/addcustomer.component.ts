@@ -23,7 +23,7 @@ export class AddCustomerComponent implements OnInit {
         this.addForm = this.formBuilder.group({
             firstName: [],
             lastName: [],
-            emailAddress: [],
+            email: [],
             age: []
         });
     }
@@ -38,7 +38,7 @@ export class AddCustomerComponent implements OnInit {
 
     addcustomer.firstName = this.addForm.value.firstName;
     addcustomer.lastName = this.addForm.value.lastName;
-    addcustomer.emailAddress = this.addForm.value.emailAddress;
+    addcustomer.emailAddress = this.addForm.value.email;
     addcustomer.age = this.addForm.value.age;
     addcustomer.accounts = [];
     addcustomer.createdBy = "admin";

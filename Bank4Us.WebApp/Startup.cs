@@ -21,17 +21,18 @@ namespace Bank4Us.WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             // Enable Cross-Origin Requests (CORS) in ASP.NET Core
-            //https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-2.1#enable-cors-with-cors-middleware
+            //https://learn.microsoft.com/en-us/aspnet/core/security/?view=aspnetcore-6.0
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
+                options.AddPolicy(name: "CorsPolicy",
+                    builder => builder.AllowAnyHeader()
                         .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowCredentials());
+                        .AllowCredentials()
+                        .SetIsOriginAllowed(origin => true)
+                        );
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -44,7 +45,7 @@ namespace Bank4Us.WebApp
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             // Enable Cross-Origin Requests (CORS) in ASP.NET Core
-            //https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-2.1#enable-cors-with-cors-middleware
+            //https://learn.microsoft.com/en-us/aspnet/core/security/?view=aspnetcore-6.0
             app.UseCors("CorsPolicy");
 
             if (env.IsDevelopment())
@@ -61,12 +62,12 @@ namespace Bank4Us.WebApp
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
-            });
+            //app.UseMvc(routes =>
+            //{
+            //    routes.MapRoute(
+            //        name: "default",
+            //        template: "{controller}/{action=Index}/{id?}");
+            //});
 
             app.UseSpa(spa =>
             {

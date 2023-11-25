@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -22,9 +22,9 @@ namespace Bank4Us.DataAccess.Core
         DataContext _context;
         public Repository(IDbFactory dbFactory)
         {
-           _context = dbFactory.GetDataContext;
+            _context = dbFactory.GetDataContext;
         }
-      
+
         public T Single<T>(Expression<Func<T, bool>> expression) where T : class
         {
             return All<T>().FirstOrDefault(expression);
@@ -88,7 +88,7 @@ namespace Bank4Us.DataAccess.Core
         }
         public virtual void ExecuteProcedure(String procedureCommand, params SqlParameter[] sqlParams)
         {
-            _context.Database.ExecuteSqlCommand(procedureCommand, sqlParams);
+            _context.Database.ExecuteSqlRaw(procedureCommand, sqlParams);
         }
 
     }

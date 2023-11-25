@@ -26,10 +26,12 @@ using NRules;
 using NRules.Fluent;
 using NRules.RuleModel;
 using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using Bank4Us.ServiceApp.Services;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Bank4Us.Common.CanonicalSchema;
 
 namespace Bank4Us.ServiceApp
 {
@@ -58,16 +60,16 @@ namespace Bank4Us.ServiceApp
                 .AddDefaultTokenProviders();
 
             // Enable Cross-Origin Requests (CORS) in ASP.NET Core
-            //https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-2.1#enable-cors-with-cors-middleware
+            //https://learn.microsoft.com/en-us/aspnet/core/security/?view=aspnetcore-6.0
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
+                options.AddPolicy(name: "CorsPolicy",
+                    builder => builder.AllowAnyHeader()
                         .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowCredentials());
+                        .AllowCredentials()
+                        .SetIsOriginAllowed(origin => true)
+                        );
             });
-
 
             //INFO: IdentityServer4 is an OpenID Connect and OAuth 2.0 framework for ASP.NET Core.
             //      http://docs.identityserver.io/en/latest/ 
@@ -123,33 +125,41 @@ namespace Bank4Us.ServiceApp
             services.AddScoped<IAccountManager, AccountManager>();
             services.AddScoped<BusinessManagerFactory>();
             services.AddSingleton<IEmailSender, EmailSender>();
-            services.AddTransient<IProfileService, IdentityClaimsProfileService>();     
+            services.AddTransient<IProfileService, IdentityClaimsProfileService>();
 
             //INFO:Register the Swagger generator, defining 1 or more Swagger documents
-            //https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-2.1&tabs=visual-studio%2Cvisual-studio-xml
+            //https://learn.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-6.0&tabs=visual-studio
             services.AddSwaggerGen(c =>
             {
-                c.DescribeAllEnumsAsStrings();
+                //c.DescribeAllEnumsAsStrings();
                 c.DescribeAllParametersInCamelCase();
-                c.SwaggerDoc("v1", new Info { Title = "Bank4Us API", Version = "V1" });
+                c.SwaggerDoc("v1", new OpenApiInfo{ Title = "Bank4Us API", Version = "V1" });
 
-                c.AddSecurityDefinition("oauth2", new OAuth2Scheme
+                c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
-                    Flow = "implicit", // just get token via browser (suitable for swagger SPA)
-                    AuthorizationUrl = "https://localhost:44346/connect/authorize",
-                    Scopes = new Dictionary<string, string> { { "Bank4Us.ServiceApp", "Bank4Us API - full access" } }
+                    Flows = new OpenApiOAuthFlows()
+                    {
+                        Implicit = new OpenApiOAuthFlow()
+                        {
+                            AuthorizationUrl = new System.Uri("https://localhost:44346/connect/authorize"),
+                            Scopes = new Dictionary<string, string> { { "Bank4Us.ServiceApp", "Bank4Us API - full access" } }
+                        }
+                    }
                 });
 
                 c.OperationFilter<AuthorizeCheckOperationFilter>();
-
-            });
-
-            services.AddMvc()
+            }
+        );
+            services.AddMvc(options =>
+            {
+                options.EnableEndpointRouting = false;
+            }
+            )
                 .AddRazorPagesOptions(options =>
-                {
-                    options.Conventions.AuthorizeFolder("/Account/Manage");
-                    options.Conventions.AuthorizePage("/Account/Logout");
-                }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+             {
+                 options.Conventions.AuthorizeFolder("/Account/Manage");
+                 options.Conventions.AuthorizePage("/Account/Logout");
+             }).SetCompatibilityVersion(CompatibilityVersion.Latest);
 
         }
 
@@ -157,11 +167,11 @@ namespace Bank4Us.ServiceApp
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             // Enable Cross-Origin Requests (CORS) in ASP.NET Core
-            //https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-2.1#enable-cors-with-cors-middleware
+            //https://learn.microsoft.com/en-us/aspnet/core/security/?view=aspnetcore-6.0
             app.UseCors("CorsPolicy");
 
-            loggerFactory.AddConsole(LogLevel.Information);
-            loggerFactory.AddDebug();
+            //loggerFactory.AddConsole(LogLevel.Information);
+            //loggerFactory.AddDebug();
 
             if (env.IsDevelopment())
             {
@@ -173,7 +183,7 @@ namespace Bank4Us.ServiceApp
             }
 
             //INFO: Enable middleware to serve generated Swagger as a JSON endpoint.
-            // https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-2.1&tabs=visual-studio%2Cvisual-studio-xml
+            // 
             app.UseSwagger();
 
             //INFO: Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
@@ -196,24 +206,33 @@ namespace Bank4Us.ServiceApp
 
         public class AuthorizeCheckOperationFilter : IOperationFilter
         {
-            public void Apply(Operation operation, OperationFilterContext context)
+            public void Apply(OpenApiOperation operation, OperationFilterContext context)
             {
-                // var hasAuthorize = context.ControllerActionDescriptor.GetControllerAndActionAttributes(true).OfType<AuthorizeAttribute>().Any();
+                MethodInfo info;
+                context.ApiDescription.TryGetMethodInfo(out info);
+                var hasAuthAttributes =  false;
+  
+                if (info != null) {
+                    hasAuthAttributes = info.GetCustomAttributes(true)
+                    .Union(info.DeclaringType.GetTypeInfo().GetCustomAttributes(true))
+                    .Any(attr => attr.GetType() == typeof(AuthorizeAttribute));
+                }             
 
-                var hasAuthorize = context.ApiDescription.ControllerAttributes().OfType<AuthorizeAttribute>().Any() ||
-                                   context.ApiDescription.ActionAttributes().OfType<AuthorizeAttribute>().Any();
-
-                if (hasAuthorize)
+                if (hasAuthAttributes)
                 {
-                    operation.Responses.Add("401", new Response { Description = "Unauthorized" });
-                    operation.Responses.Add("403", new Response { Description = "Forbidden" });
+                    operation.Responses.Add("401", new OpenApiResponse { Description = "Unauthorized" });
+                    operation.Responses.Add("403", new OpenApiResponse { Description = "Forbidden" });
 
-                    operation.Security = new List<IDictionary<string, IEnumerable<string>>>
+                    operation.Security = new List<OpenApiSecurityRequirement>
                     {
-                        new Dictionary<string, IEnumerable<string>> {{"oauth2", new[] {"demo_api"}}}
-                    };
+                    new OpenApiSecurityRequirement
+                        {
+                            [new OpenApiSecurityScheme {Reference = new OpenApiReference {Type = ReferenceType.SecurityScheme, Id = "oauth2"}}]
+                                = new[] { "demo_api" }
+                        }
+                     };
                 }
-            }
+            }  
         }
     }
 }
